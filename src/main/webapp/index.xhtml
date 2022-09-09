@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <title>GESTIÓN EMPRESARIAL</title>
+        <link href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet"/>
+    </h:head>
+    <style>
+        * {
+            box-sizing: border-box; 
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            margin: 0;
+        }
+        #main {
+            display: flex;
+            flex: 1;
+        }
+        #main > article {
+            flex: 1;
+        }
+        #main > nav, 
+        #main > aside {
+            flex: 0 0 20vw;
+            background: beige;
+        }
+        header {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: wheat;
+            height: 15vh;
+        }
+        header, article, nav, aside {
+            padding: 1em;
+        }
+    </style>
+
+    <h:body style="background-color: #D4D4D4;">
+        <header><h1>GESTIÓN EMPRESARIAL SAS</h1></header>
+        <div id="main">
+            <nav>
+                <ul>
+                    <li>
+                        <h:link outcome="/empleados">Empleados</h:link>
+                    </li>
+                    <li>
+                        <h:link outcome="/departamentos">Departamentos</h:link>
+                    </li>
+                    <li>
+                        <h:link outcome="/index">Regresar</h:link>
+                    </li>
+                </ul>
+            </nav>
+            <article>
+                <div class="card">
+                    <ui:insert name="contenido">
+                    </ui:insert>
+                    <ui:insert name="contenido2">
+                    </ui:insert>
+                </div>
+            </article>
+        </div>
+    </h:body>
+    
+</html> 
+

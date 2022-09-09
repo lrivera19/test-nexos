@@ -1,0 +1,137 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets" template="/index.xhtml">
+
+    <ui:define name="contenido">
+    <h:body>
+        <p:growl id="msj" />
+        <h:form id="formEmpleado">
+            <p:toolbar style="height:70px">
+                <f:facet name="left">
+                    <p:commandButton value="Nuevo Empleado" title="Crear" 
+                                     icon="ui-icon-plus" oncomplete="PF('dialogoCrear').show();"/>
+                </f:facet>
+            </p:toolbar>
+            <div style="margin-top: 10px;"/>
+            <p:dataTable var="c" value="#{employeeBean.listEmployees}"
+                         emptyMessage="No se encontraron registros"
+                         id="tablaClientes" 
+                         style="text-align: center;">
+                <p:column headerText="Tipo Documento">
+                    <h:outputText value="#{c.documentType}"/>
+                </p:column>
+                <p:column headerText="Número Documento">
+                    <h:outputText value=" #{c.documentNumber}"/>
+                </p:column>
+                <p:column headerText="Nombres">
+                    <h:outputText value=" #{c.names}"/>
+                </p:column>
+                <p:column headerText="Apellidos">
+                    <h:outputText value=" #{c.surnames}"/>
+                </p:column>
+                <p:column headerText="Departamento">
+                    <h:outputText value=" #{c.departmentId.name}"/>
+                </p:column>
+                <p:column headerText="Ciudad">
+                    <h:outputText value=" #{c.city}"/>
+                </p:column>
+                <p:column headerText="Dirección">
+                    <h:outputText value=" #{c.address}"/>
+                </p:column>
+                <p:column headerText="Email">
+                    <h:outputText value=" #{c.email}"/>
+                </p:column>
+                <p:column headerText="Celular">
+                    <h:outputText value=" #{c.phone}"/>
+                </p:column>
+                <p:column style="text-align: center;width:70px">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones"/>
+                    </f:facet>
+                    <p:commandButton title="Editar"
+                                     icon="ui-icon-pencil" actionListener="#{employeeBean.editar(c)}" update=":formCrear" oncomplete="PF('dialogoCrear').show();">
+                    </p:commandButton> 
+                    <p:commandButton id="btnEliminar" title="Eliminar" 
+                                     icon="ui-icon-trash" actionListener="#{employeeBean.eliminar(c)}" update=":formEmpleado :msj">
+                        <p:confirm header="Confirmación" message="Está seguro que desea eliminar?" icon="ui-icon-alert" />
+                    </p:commandButton> 
+                </p:column>
+            </p:dataTable>
+
+            <p:confirmDialog global="true"
+                             showEffect="fade" 
+                             hideEffect="fade">
+                <center>
+                    <p:commandButton value="Si" 
+                                     type="button" 
+                                     styleClass="ui-confirmdialog-yes" 
+                                     icon="ui-icon-check"/>
+                    <p:commandButton value="No" 
+                                     type="button" 
+                                     styleClass="ui-confirmdialog-no" 
+                                     icon="ui-icon-close"/>   
+                </center>                   
+            </p:confirmDialog>
+        </h:form>
+
+        <p:dialog widgetVar="dialogoCrear" modal="true" showEffect="clip" header="Nuevo Empleado" resizable="false">
+            <p:ajax event="close" listener="#{employeeBean.limpiar()}" update=":formCrear"/>
+            <h:form id="formCrear"> 
+                <p:panelGrid columns="4">
+                    <p:outputLabel value="Tipo Documento" for="tipoIdentificacion"/>
+                    <p:selectOneMenu id="tipoIdentificacion" label="Tipo Identificación" value="#{employeeBean.employee.documentType}" required="true">
+                        <f:selectItem itemLabel=" -- " itemValue="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{employeeBean.listDocumentTypes}" var="dt" itemValue="#{dt}" itemLabel="#{dt}" itemDescription="#{dt}" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Número Documento" for="numeroIdentificacion"/>
+                    <p:inputText id="numeroIdentificacion" label="Número Identificación" value="#{employeeBean.employee.documentNumber}" maxlength="32" required="true">
+                    </p:inputText>
+
+                    <p:outputLabel value="Nombres" for="nombreCompleto"/>
+                    <p:inputText id="nombreCompleto" label="Nombres" value="#{employeeBean.employee.names}" maxlength="64" required="true">
+                    </p:inputText>
+                    
+                     <p:outputLabel value="Apellidos" for="apellidos"/>
+                     <p:inputText id="apellidos" label="Apellidos" value="#{employeeBean.employee.surnames}" maxlength="64" required="true">
+                    </p:inputText>
+
+                    <p:outputLabel value="Departamento" for="departamento"/>
+                    <p:selectOneMenu id="departamento" label="Departamento" value="#{employeeBean.department.id}" required="true">
+                        <f:selectItem itemLabel=" -- " itemValue="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{departmentBean.listDepartments}" var="department" itemValue="#{department.id}" itemLabel="#{department.name}" itemDescription="#{department.code}" />
+                    </p:selectOneMenu>
+                    
+                    <p:outputLabel value="Ciudad" for="ciudad"/>
+                    <p:inputText id="ciudad" label="Ciudad" value="#{employeeBean.employee.city}" maxlength="264" required="true">
+                    </p:inputText>
+                    
+                    <p:outputLabel value="Dirección" for="direccion"/>
+                    <p:inputText id="direccion" label="Dirección" value="#{employeeBean.employee.address}" maxlength="264" required="true">
+                    </p:inputText>
+                    
+                    <p:outputLabel value="Email" for="email"/>
+                    <p:inputText type="email" id="email" label="Email" value="#{employeeBean.employee.email}" maxlength="128" required="true">
+                    </p:inputText>
+                    
+                    <p:outputLabel value="Celular" for="celular"/>
+                    <p:inputText id="celular" label="Celular" value="#{employeeBean.employee.phone}" maxlength="16" required="true">
+                    </p:inputText>
+
+                    <p:outputLabel value="Acción" style="font-weight:bold"/>
+                    <p:commandButton rendered="#{employeeBean.employee.id == null}" value="Crear" title="Crear"
+                                     icon="ui-icon-disk" actionListener="#{employeeBean.guardar()}" update=":formEmpleado formCrear :msj" oncomplete="PF('dialogoCrear').hide();">
+                    </p:commandButton>
+                    <p:commandButton rendered="#{employeeBean.employee.id != null}" value="Modificar" title="Modificar"
+                                     icon="ui-icon-disk" actionListener="#{employeeBean.modificar()}" update=":formEmpleado formCrear :msj" oncomplete="PF('dialogoCrear').hide();">
+                    </p:commandButton>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </h:body>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets" template="/index.xhtml">
+   
+    <ui:define name="contenido2">
+            <h:body>
+        <p:growl id="msj" />
+        <h:form id="formDepartamento">
+            <p:toolbar style="height:70px">
+                <f:facet name="left">
+                    <p:commandButton value="Nuevo Departamento" title="Crear" 
+                                     icon="ui-icon-plus" oncomplete="PF('dialogoCrear').show();"/>
+                </f:facet>
+            </p:toolbar>
+            <div style="margin-top: 10px;"/>
+            <p:dataTable var="c" value="#{departmentBean.listDepartments}"
+                         emptyMessage="No se encontraron registros"
+                         id="tablaClientes" 
+                         style="text-align: center;">
+                <p:column headerText="Código">
+                    <h:outputText value="#{c.code}"/>
+                </p:column>
+                <p:column headerText="Nombre">
+                    <h:outputText value=" #{c.name}"/>
+                </p:column>
+                <p:column style="text-align: center;width:70px">
+                    <f:facet name="header">
+                        <h:outputText value="Acciones"/>
+                    </f:facet>
+                    <p:commandButton title="Editar"
+                                     icon="ui-icon-pencil" actionListener="#{departmentBean.editar(c)}" update=":formCrear" oncomplete="PF('dialogoCrear').show();">
+                    </p:commandButton> 
+                    <p:commandButton id="btnEliminar" title="Eliminar" 
+                                     icon="ui-icon-trash" actionListener="#{departmentBean.eliminar(c)}" update=":formDepartamento :msj">
+                        <p:confirm header="Confirmación" message="Está seguro que desea eliminar?" icon="ui-icon-alert" />
+                    </p:commandButton> 
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true"
+                             showEffect="fade" 
+                             hideEffect="fade">
+                <center>
+                    <p:commandButton value="Si" 
+                                     type="button" 
+                                     styleClass="ui-confirmdialog-yes" 
+                                     icon="ui-icon-check"/>
+                    <p:commandButton value="No" 
+                                     type="button" 
+                                     styleClass="ui-confirmdialog-no" 
+                                     icon="ui-icon-close"/>   
+                </center>                   
+            </p:confirmDialog>
+        </h:form>
+
+        <p:dialog widgetVar="dialogoCrear" modal="true" showEffect="clip" header="Nuevo Departamento" resizable="false">
+            <p:ajax event="close" listener="#{departmentBean.limpiar()}" update=":formCrear"/>
+            <h:form id="formCrear"> 
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Código" for="codigo"/>
+                    <p:inputText id="codigo" label="Código" value="#{departmentBean.department.code}" maxlength="32" required="true">
+                    </p:inputText>
+
+                    <p:outputLabel value="Nombre" for="nombre"/>
+                    <p:inputText id="nombre" label="Nombre" value="#{departmentBean.department.name}" maxlength="64" required="true">
+                    </p:inputText>
+                    
+                    <p:outputLabel value="Acción" style="font-weight:bold"/>
+                    <p:commandButton rendered="#{departmentBean.department.id == null}" value="Crear" title="Crear"
+                                     icon="ui-icon-disk" actionListener="#{departmentBean.guardar()}" update=":formDepartamento formCrear :msj" oncomplete="PF('dialogoCrear').hide();">
+                    </p:commandButton>
+                    <p:commandButton rendered="#{departmentBean.department.id != null}" value="Modificar" title="Modificar"
+                                     icon="ui-icon-disk" actionListener="#{departmentBean.modificar()}" update=":formDepartamento formCrear :msj" oncomplete="PF('dialogoCrear').hide();">
+                    </p:commandButton>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </h:body>
+    </ui:define>
+    
+</ui:composition>

@@ -1,0 +1,11 @@
+ejb\DepartmentFacadeLocal.class
+entity\Department.class
+entity\Employee.class
+entity\Employee_.class
+ejb\AbstractFacade.class
+entity\Department_.class
+ejb\EmployeeFacadeLocal.class
+ejb\EmployeeFacade.class
+controller\EmployeeBean.class
+ejb\DepartmentFacade.class
+controller\DepartmentBean.class
